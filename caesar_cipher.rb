@@ -1,56 +1,31 @@
-#Caesar Cipher
-#Simple text cipher that shifts letters a fixed number of positions
+def ceaeser_cipher(string, shift)
+	alphabet = ("a".."z").to_a 
+	new_word = []
+	string_array = string.scan(/./)
 
-def caesar_cipher_encrypt(string, shift)
-	
-	#Alphabet Arrays
-	alpha = ("a".."z").to_a
-	alphaBig = ("A".."Z").to_a
-	new_string = ""
+	string_array.each do |letter|
 
-	#Do shift on each letter one at a time
-	string.split(//).each do |letter|
-		
-		#See if letter should be shifted, shift using function
-		if alpha.include? letter
-			new_letter = letterShift(letter, alpha, shift)
-		elsif alphaBig.include? letter
-			new_letter = letterShift(letter, alphaBig, shift)
+		#will return true alphabet array has a character that matches any of the character in the string
+		if alphabet.include? letter
+			#This sets the new_letter as the index of the the letter that is at the shift factor to the right of the letter index in the alphabet array
+			new_letter = (alphabet.index(letter) + shift) % alphabet.length
+			new_word << alphabet[new_letter] # adds the new letter to the new encrypted string
 		else
-			new_letter = letter
+			new_word << letter #for punctuation and spaces etc
 		end
-		new_string += new_letter
 
 	end
-	new_string
+	puts new_word.join("") #joins all the new letters together to form the encrypted string
+
 end
 
-def caeser_cipher_decrypt(string, shift)
-	caesar_cipher_encrypt(string, 0-shift)
-end
+puts "Please enter your sentence to encrypt: "
+string = gets.chomp.downcase
 
-def letterShift(letter, array, shift)
-#captures letter shift logic
+puts "please enter the shift factor"
+shift = gets.chomp.to_i
 
-	index = array.index(letter)
-	new_index = (index + shift)%(array.length)
-	puts new_index
-	new_letter = array[new_index]
-end
+ceaeser_cipher(string, shift)
 
-##Tests##
-message = "HI"
-puts "-----Test 1-----" 
-key1 = 2
-encrypted_message1 = caesar_cipher_encrypt(message, key1)
-puts "Encrypted Message 1: #{encrypted_message1}"
-decrypted_message1 = caeser_cipher_decrypt(encrypted_message1, key1)
-puts "Decrypted message 1: #{decrypted_message1}"
 
-puts "-----Test 2-----" 
-message = "HI"
-key2 = 20
-encrypted_message2 = caesar_cipher_encrypt(message, key2)
-puts "Encrypted Message 2: #{encrypted_message2}"
-decrypted_message2 = caeser_cipher_decrypt(encrypted_message2, key2)
-puts "Decrypted message 1: #{decrypted_message2}"
+
